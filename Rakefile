@@ -5,7 +5,7 @@ require 'oauth'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
-    s.name = %q{oauth}
+    s.name = %q{oauth-instructure}
     s.version = OAuth::VERSION
     s.authors = ["Pelle Braendgaard", "Blaine Cook", "Larry Halff", "Jesse Clark", "Jon Crosby", "Seth Fitzsimmons", "Matt Sanford", "Aaron Quint"]
     s.email = "oauth-ruby@googlegroups.com"
