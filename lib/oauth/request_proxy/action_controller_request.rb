@@ -1,6 +1,10 @@
 require 'active_support'
 require 'action_controller'
-require 'action_controller/request'
+if Rails.version < "3.0"
+  require 'action_controller/request'
+else
+  require 'action_controller/test_case'
+end
 require 'uri'
 
 module OAuth::RequestProxy
