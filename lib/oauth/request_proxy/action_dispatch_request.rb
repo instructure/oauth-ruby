@@ -1,11 +1,10 @@
 require 'active_support'
 require 'action_controller'
-require 'action_controller/request'
 require 'uri'
 
 module OAuth::RequestProxy
-  class ActionControllerRequest < OAuth::RequestProxy::Base
-    proxies(defined?(ActionController::AbstractRequest) ? ActionController::AbstractRequest : ActionController::Request)
+  class ActionDispatchRequest < OAuth::RequestProxy::Base
+    proxies ActionDispatch::Request
 
     def method
       request.method.to_s.upcase
@@ -34,9 +33,9 @@ module OAuth::RequestProxy
 
       unless options[:clobber_request]
         params << header_params.to_query
-        params << request.query_string unless query_string_blank?
+        params << request.query_string unless request.query_string.blank?
 
-        if request.post? && request.content_type.to_s.downcase.start_with?("application/x-www-form-urlencoded")
+        if request.post? && request.content_type == Mime::Type.lookup("application/x-www-form-urlencoded")
           params << request.raw_post
         end
       end
@@ -47,7 +46,7 @@ module OAuth::RequestProxy
         map { |p| p.split('=').map{|esc| CGI.unescape(esc)} }.
         reject { |kv| kv[0] == 'oauth_signature'}
     end
-
+  
   protected
 
     def query_params
@@ -59,17 +58,19 @@ module OAuth::RequestProxy
     end
 
   end
+
 end
 
 module ActionController
   class Base
-    def process_with_oauth(request, response=nil)
+    def process_with_new_base_test(request, response=nil)
       request.apply_oauth! if request.respond_to?(:apply_oauth!)
-      process_without_oauth(request, response)
+      super(request, response)
     end
-    alias_method_chain :process, :oauth
   end
+end
 
+module ActionDispatch
   class TestRequest
     def self.use_oauth=(bool)
       @use_oauth = bool
@@ -89,7 +90,7 @@ module ActionController
     end
 
     def apply_oauth!
-      return unless ActionController::TestRequest.use_oauth? && @oauth_options
+      return unless ActionDispatch::TestRequest.use_oauth? && @oauth_options
 
       @oauth_helper = OAuth::Client::Helper.new(self, @oauth_options.merge(:request_uri => (respond_to?(:fullpath) ? fullpath : request_uri)))
       @oauth_helper.amend_user_agent_header(env)
