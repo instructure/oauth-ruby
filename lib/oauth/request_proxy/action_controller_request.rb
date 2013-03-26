@@ -67,9 +67,9 @@ end
 
 module ActionController
   class Base
-    def process_with_oauth(request, response=nil)
+    def process_with_oauth(request, *arguments)
       request.apply_oauth! if request.respond_to?(:apply_oauth!)
-      process_without_oauth(request, response)
+      process_without_oauth(request, *arguments)
     end
     alias_method_chain :process, :oauth
   end
