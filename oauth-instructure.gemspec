@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "oauth-instructure"
-  s.version = "0.4.8"
+  s.version = "0.4.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pelle Braendgaard", "Blaine Cook", "Larry Halff", "Jesse Clark", "Jon Crosby", "Seth Fitzsimmons", "Matt Sanford", "Aaron Quint"]
-  s.date = "2013-03-25"
+  s.date = "2013-03-26"
   s.description = "OAuth Core Ruby implementation"
   s.email = "oauth-ruby@googlegroups.com"
   s.executables = ["oauth"]
@@ -75,7 +75,7 @@ Gem::Specification.new do |s|
     "lib/oauth/tokens/request_token.rb",
     "lib/oauth/tokens/server_token.rb",
     "lib/oauth/tokens/token.rb",
-    "oauth.gemspec",
+    "oauth-instructure.gemspec",
     "tasks/deployment.rake",
     "tasks/environment.rake",
     "tasks/website.rake",
